@@ -1,0 +1,994 @@
+\documentclass[usenatbib,usegraphicx]{mn2e}
+\usepackage{times}
+\hyphenation{Hart-RAO}
+
+\begin{document}
+
+\title{Phase Lag Determination in OH/IR stars using the Discrete Correlation
+Function}
+
+\author[M. E. West et al.]
+{M. E. West$^{1}$\thanks{E-mail: marion@hartrao.ac.za}, M. J. 
+Gaylard$^{1}$, D. J. van der Walt$^{2}$ and R. J. Cohen$^{3}$
+\\ $^1$        Hartebeesthoek Radio Astronomy Observatory, PO Box 443,
+Krugersdorp, 1740, South Africa
+\\ $^2$       Space Research Unit, Physics Department, Potchefstroom
+University for CHE, Private Bag X6001, Potchefstroom, 2520, South Africa
+}
+
+\date{Accepted 200?;      Received 200?;      in original form 200?}
+
+\pagerange{\pageref{firstpage}--\pageref{lastpage}}
+\pubyear{200?}
+
+\maketitle
+
+ \begin{abstract}
+Write abstract here...
+\end{abstract}
+
+\begin{keywords}
+masers -- stars: OH/IR -- stars: AGB -- ...
+\end{keywords}
+
+\label{firstpage}
+
+\section{Introduction}
+
+OH/IR stars are late-type stars in the AGB phase of stellar evolution,
+undergoing substantial mass loss and enshrouded in a thick, expanding shell
+of dust \citep[][review]{WilBar68,RJC89}.  The central star heats the dust
+which re-radiates in the IR.  OH is formed in the outer regions of the dust
+shell through photo-dissociation of water molecules by UV light.  The
+thickness of the dust shell, together with the expansion, results in long
+column densities of OH molecules travelling at velocities with a narrow
+range of dispersion.  This velocity coherence amongst the OH molecules
+allows for masing in the dust shell pumped by far-IR photons.  The masers
+have a characteristic double-peaked profile at 1612 MHz
+\citep[][review]{WilBar72,RJC89} with the most intense radiation arising
+from the near- and far-sides of the dust shell along the line of sight to
+the observer.
+
+The central star pulsates resulting in variable heating of the dust and
+hence IR variations which follow the fluctuations of the central star.  OH
+maser variations follow the IR variations.  Monitoring the fluctuations in
+the OH maser radiation allows the phase lag between radiation coming from
+the front and back of the dust shell to be measured.  This yields the
+physical size of the OH shell around the star.  The angular diameter of the
+shell can be measured using interferometry and by combining the two
+measurements an independent estimate of the distance to the star can be
+obtained.  The distance measurement is only valid if the OH masing shell
+obeys the thin shell model \citep[][review]{ReidMMJS77,RJC89}, ie. it is
+thin relative to the size of the dust shell and is spherically symmetric.
+
+Determining phase lags from real data appears simple in principle but is
+non-trivial in practice.  Several papers addressing the problem of
+determining phase lags from lensed quasars highlight some of the
+difficulties encountered in finding suitable methods
+\citep[eg.][]{PhLGil-M02,PhLOscoz01,PhLPelt96,PhLPress92,EK88}. 
+Standard analytical techniques are appropriate where underlying functions
+are continuous, stationary, stochastic and regularly sampled
+\citep{Welsh99,EK88}.  Real astronomical data rarely fit these criteria. 
+The HartRAO OH time series, as is generally the case, are continuous and
+stochastic, but are neither stationary nor regularly sampled.
+
+Any method selected for determining the phase lag between radiation from the
+front and back of the OH shell must be able to cope with the problems posed
+by the data.  Firstly it must either interpolate the data to achieve regular
+sampling or be robust enough to cope with irregular sampling \citep{EK88}. 
+The OH time series appear superficially sinusoidal and interpolations using
+periodic functions such as cosines and asymmetric cosines appear attractive
+and have been used in the past \citep[eg.][]{SchSherWin78,HerHab85}. 
+However these are not consistent with the quasi-periodic, variable amplitude
+light curves actually seen in closely sampled OH/IR light curves.  Thus the
+response of any method to non-stationary features needs to be understood.
+
+Several methods of determining phase lags have been developed.  Early
+attempts sampled 1612--MHz emission at intervals of a few months over a 2--3
+year period and used simple sinusoidal fits to the data
+\citep{SchSherWin78,Jewell79,JewWebSny80}.  The monitoring was too short to
+model the time series accurately and little more than general confirmation
+of theoretical predictions for shell sizes was achieved.  \citet{Herman83}
+monitored 1612--MHz OH emission from a set of stars monthly for 4--6 years. 
+Coverage was sufficient to show a steeper rise than fall in the time series. 
+Phase lags were determined by fitting asymmetric cosines to the time series. 
+The data of \citet{HerHab85} were extended to a 10--year span and linear
+interpolation and least squares fitting was used for the initial phase lag
+estimate.  Errors were estimated using Monte Carlo simulations modelled on
+asymmetric cosines fitted to the time series
+\citep{vLvdHvS90,vanLangevelde92}.
+
+\citet{Shepherd91} created a template spectrum which modelled the profile
+of the source in the absence of variations.  A template time series modelled
+on the time series of the strongest spectral peak was also generated.  Data
+for any channel could be modelled using a Fourier series evaluation, based
+on the assumption that the variations in time series were the same for all
+channels apart from an amplitude scaling factor. 
+Lags were determined using trial lags in the model spectra and minimising
+$\chi^2$ between trial lags the OH time series.  
+
+\citet{West92} interpolated the data using spline fits.  This allowed for
+the variations in period and amplitude which are clearly seen in the HartRAO
+data.  A least squares minimisation technique was used to determine phase
+lags across the shell.  In both the above cases the data used were from the
+HartRAO monitoring programme.
+
+All the above methods either fitted analytic functions to the data
+\citep[eg.][]{Herman83,HerHab85} or interpolated the data in some other
+manner \citep[eg.][]{vLvdHvS90,Shepherd91,West92}.  The analytic functions
+forced periods and amplitudes to remain constant over time, subtly altering
+data before phase lag determination.  Other types of interpolation gave rise
+to a certain amount of `invention' of data \citep{EK88} as the form of the
+variations was modelled imperfectly.  Thus all these methods introduced
+systematic errors into the time series and phase lags that were difficult to
+quantify.
+
+The HartRAO monitoring data are frequently sampled and analytic periodic
+functions cannot be used to model the data without sacrificing the detail
+gained thereby.  The Discrete Correlation Function (DCF)
+method of \citet{EK88}, hereafter referred to as EK88, cross-correlates the
+actual data without interpolation, which makes this method particularly
+suitable, and it is mathematically relatively simple to implement.  Other
+methods used for determining phase lags, eg. from lensed quasars
+\citep[eg.][]{PhLPelt96,PhLPress92}, are more complex and some also involve
+reconstructing the data.
+
+The aim of this work was to test the DCF method of EK88 for application to
+the HartRAO OH data.
+
+The observations data reduction are described in Section 2.  Section 3
+explains the selection of sources for testing the method.  In Section 4 the
+application of the DCF method to the HartRAO data is briefly described.  In
+Section 5 the testing of the DCF method in the context of the OH/IR data is
+covered.  In Section 6 the DCF method is applied to the data from two
+OH/IRs.  Section 7 deals with the derivation of physically useful parameters
+from the results and in Section 8 the efficacy of the DCF method is evaluated.
+
+
+\section{Observations}
+
+A set of 20 OH/IR stars was selected for monitoring in the ground state OH
+lines using the 26--m telescope at Hartebeesthoek \citep{West98}.  They
+were monitored from late 1985 until early 1996.  
+Initially observations were made
+every two weeks, but the rapid increases in brightness
+for some of the sources were found to be undersampled and as a result the
+observing frequency was increased to once a week in mid 1993.  
+GLONASS interference
+affected the data
+\citep{ComWestGay94} and this eventually led to the termination of the
+programme.
+
+The HartRAO antenna had an aperture efficiency of 0.51 when the subreflector
+was tilted for observing with the off-axis 18cm feed horn.  The beamwidth
+was $0.5^\circ$ and the pointing accuracy was $30''$.  The spectrometer 
+accepted only one polarization, and left circular
+polarization was normally used.  The zenith system temperature was typically
+40--50 K.  A correlator bandwidth of 0.64--MHz, covered by 256
+channels, provided a velocity resolution of 0.45 km s$^{-1}$.  Most sources
+were observed at 1612--MHz, although some were also observed at 1665-- and
+1667--MHz.  The {\em rms\/} noise on a single fifteen minute
+spectrum was 0.6 Jy.  Standard continuum sources
+\citep{Ott94} and the 1667--MHz OH absorption towards W12 were used for
+calibration.
+
+Baseline curvature in the spectra was removed by subtracting low-order
+polynomials fitted to signal-free segments. Atmospheric absorption was
+corrected using a formula obtained from the Jodrell Bank Observatory.  Data
+affected by rain and the proximity of the Sun were discarded.  After
+correction, spectra taken in any given 24--hour period were averaged.  Time
+series were created for all channels with a useful signal to noise ratio.
+
+Interference from GLONASS satellites increased the noise level in the
+spectra, suppressed the maser lines, affected the system temperature
+calibration and introduced excessive curvature into the spectrum baselines
+\citep{ComWestGay94}.  As a test, one source was corrected manually
+\citep{West98}, but this proved too time consuming.  It was replaced by
+automatic outlier rejection in the time series of the individual channels, 
+in which cubic splines were fitted to the data
+and outliers greater than 3$\sigma$ were recursively removed.
+
+
+\section{Source Selection}
+
+
+\begin{figure}
+\resizebox{\hsize}{!}{\includegraphics[clip,angle=270]{oh357sp.ps}}
+\caption{The 1612 MHz OH spectrum of OH357.1--1.3 at maximum and
+minimum light.}
+\label{fig:oh357sp}
+\end{figure}
+
+\begin{figure}
+\resizebox{\hsize}{!}{\includegraphics[clip,angle=270]{wxpscsp.ps}}
+\caption{The 1612 MHz OH spectrum of WX Psc at maximum and minimum
+light.}
+\label{fig:wxpscsp}
+\end{figure}
+
+
+Two data sets were selected to test the application of the DCF: a strong
+source with a period of six years and 1.5 cycles of data (OH357.3--1.3) and
+a weaker source with a period of two years and seven cycles of data (WX
+Psc).  Their spectra are shown in Figures~\ref{fig:oh357sp} \&
+\ref{fig:wxpscsp}.  OH357.3--1.3 has a profile resembling the canonical `U' 
+shape of a spherical-shell OH/IR star, and its emission is detectable at all
+points between the two peaks.  By contrast, WX Psc has narrow peaks with no
+noticeable emission in between.
+The time series of selected channels, including the brightest blue-- and
+red--shifted peaks (channels 5 and 54 respectively) and the weakest channel
+selected for OH357.3--1.3 (channel 30) are shown in
+Figure~\ref{fig:oh357tsp}.  Each time series contained about 260 samples
+after outlier removal, providing $\sim170$ samples per cycle.
+
+
+\begin{figure*}
+\resizebox{\hsize}{!}{\includegraphics[clip,angle=0]{oh357tsp.ps}}
+\caption{Selected time series from OH357.3-1.3: the velocity of
+each channel, with the channel number in parentheses, is shown at top left.}
+\label{fig:oh357tsp}
+\end{figure*}
+
+
+The time series of all the channels of WX Psc with a discernible signal are
+shown in Figure~\ref{fig:wxtsalp}.  Cycles are numbered for future reference
+in the graph for channel 1.  The brightest blue-- and red--shifted peaks are
+represented by channels 2 and 3 and channels 11 and 12 respectively.  There
+were 330 samples across the whole time series.  For cycles 1 -- 4.5,
+observed at two-week intervals, there were typically $\sim45$ samples per
+cycle, albeit with significant gaps in cycles 1 and 2.  The remaining one
+and a half cycles had double the number of samples per cycle.
+
+
+\begin{figure*}
+\resizebox{\hsize}{!}{\includegraphics[clip,angle=0]{wxtsalp.ps}}
+\caption{Time series for WX Psc channels: 
+the velocity of the channel, with the channel number in
+parentheses, is shown at top left.}
+\label{fig:wxtsalp}
+\end{figure*}
+
+
+
+\section{Application of the DCF Method}
+
+The DCF method of EK88 is based on a convolution function.  It is applicable
+in the case of a varying input function which drives an output function.  In
+this case, the pulsation-induced varying luminosity of the central star
+provides the input function, while the output function is the variation in
+the radiatively pumped OH masers in the circumstellar dust shell.
+
+The equations defining the DCF are summarised below.  
+For two discrete data trains $a_{i}$ and $b_{j}$ the set of unbinned
+discrete correlations is collected:
+
+\begin{equation}
+UDCF_{ij} = \frac{(a_{i}-\bar{a})(b_{j}-\bar{b})}
+            {\sqrt{(\sigma^{2}_{a}-e^{2}_{a})(\sigma^{2}_{b}-e^{2}_{b})}} 
+\end{equation}
+for all measured pairs $(a_{i},b_{j})$, each of which is associated with the
+pairwise lag $\Delta t_{ij} = t_{j} - t_{i}$, where $t_{i}$ and $t_{j}$ are
+the times at which the measurements were taken.  For the OH monitoring data,
+$a_{i}$ and $b_{j}$ are the time-dependent flux densities of any two
+channels in the OH spectrum.  The mean values are $\bar{a}, \bar{b}$,
+the standard deviations from the means are $\sigma_{a}, \sigma_{b}$, and
+$e_{a}, e_{b}$ are the associated measurement errors.
+
+The result is then binned in time to enable the directly useful function
+$DCF(\tau)$ to be measured.  Averaging over $M$ pairs for which $\tau-
+\frac{\Delta\tau}{2} \leq \Delta\tau_{ij} < \tau+\frac{\Delta\tau}{2}$
+gives:
+
+\begin{equation}
+DCF(\tau) = \frac{1}{M}UDCF_{ij}
+\end{equation}
+
+The $DCF(\tau)$ is undefined for a bin with no points.  There is a trade-off
+between ensuring high accuracy in the mean for each bin and getting good
+resolution in the cross-correlation curve.  Since there is no interpolation,
+the DCF is only defined for lags for which measured data exist and the
+function can only be evaluated at a discrete set of sample points.  Thus a
+mathematical function needs to be fitted across the maximum of the DCF in
+order to determine its position accurately \citep[eg.][]{Lehar92}.  EK88
+noted that to avoid a spurious maximum at zero lag arising from correlated
+errors, points in the time series where the pairwise lag $\Delta t_{ij} =
+t_{j} - t_{i} = 0$ should be excluded from the DCF calculation.
+
+                  
+The DCF method is relatively insensitive to the size of bin used in the DCF. 
+In implementing the DCF, tests indicated that a bin size equal to 
+$(0.5 - 1)\times$ the mean sampling interval was appropriate.
+
+For determination of the maximum of the DCF, a time range about zero lag
+equal to half the period was used.  With this relatively large range, a
+fourth order polynomial was needed to provide a good fit for determining the
+maximum.
+ 
+
+Monte Carlo simulations were used to estimate the error in the phase lag.
+The data for the simulations were created as shown in
+Table~\ref{tbl:tstplerr}.  One hundred simulations were done for each
+non-redundant channel pair used in determining the phase lag.  The error for
+each channel pair was estimated using the standard deviation of the mean lag
+taken from the Monte Carlo simulations.  The final error in the phase lag
+was determined by taking a weighted average of the errors in the phase lags
+from each channel pair.
+
+\begin{table}
+%\begin{center}
+%\begin{minipage}{140mm}
+
+\caption{Characteristics of the function used for estimating errors in the
+phase lag.}
+
+\label{tbl:tstplerr}
+
+\begin{tabular}{|l|l|}
+
+\hline
+\multicolumn{2}{c}{Characteristics of Function} \\
+
+\hline
+
+Function & Spline fit to real OH time series. \\
+Sampling Interval & As for real OH time series. \\
+Noise & Constructed from noise in real OH time series. \\
+Asymmetry & Implicitly modelled by spline fits to\\
+ & real OH time series. \\
+Modulations & Implicitly modelled by spline fits to\\
+ & real OH time series. \\
+
+\hline
+
+\end{tabular}
+%\end{centre}
+%\end{minipage}
+\end{table}
+
+
+
+
+\section{DCF Testing with Synthetic Data}
+
+\subsection{Creation of the synthetic time series}
+
+In order to determine which characteristics of the OH time series might give
+rise to a systematic bias in the calculated phase lags, synthetic data of
+similar characteristics but known phase lags were created.
+
+The quasi-periodic, asymmetric nature of the light curves were modelled by
+an asymmetric cosine function \citep{DavEtoLS96}:
+
+\begin{equation} 
+s(t) = \frac{b\cos (\omega t + \phi)}{1 - f\sin (\omega t +\phi)} 
+\end{equation} 
+where $s(t)$ is the asymmetric cosine function and $b$ is its amplitude, 
+$\omega$ is $\frac{2 \pi}{T}$, where $T$ is the period of the OH variations, 
+$t$ is time, $\phi$ is the phase lag and $f$ is related to the asymmetry 
+factor $f_{0}$, which lies between zero and one, and is defined as: 
+
+\begin{equation} 
+f = \sin (\pi [f_{0} - \frac{1}{2}]) 
+\end{equation} 
+where, for $f_{0} = 0.5$, the function is symmetric.
+
+OH/IR stars show variations in amplitude from cycle to cycle.  For
+simplicity, linear modulations were chosen to model these. Both regular and
+irregular sampling were tested.  The latter was simulated using a gaussian
+random number generator.  Noise was modelled using a gaussian random number
+generator and tests included data with and without noise.
+
+Combining these factors, the equation used to model the data was:
+
+\begin{equation}
+F_{i}(t) = \delta_{min}(t) + 
+           \frac{\delta_{max}(t)\cos (\omega t+\phi)}
+                {1-f\sin (\omega t+\phi)} +
+           \frac{\xi(t)}{(1-f)} +
+           \frac{\zeta(t)_{t=t_{1}}^{t=t_{2}}}{(1-f)}      
+\end{equation}
+where $F_{i}(t)$ is the flux density in the $ith$ channel, $t$ is the time
+at which the signal was sampled, $\delta_{min}(t)$ is the linear variation
+applied to the minima, $\delta_{max}(t)$ is the linear variation applied to
+the maxima, $\xi(t)$ is the noise in the data and $\zeta(t)$ are the
+zero-lag features applied between times $t_{1}$ and $t_{2}$ .  The factor of
+$(1-f)$ is applied to $\xi(t)$ and $\zeta(t)$ to keep the signal to noise
+ratio and the zero-lag features, respectively, constant for varying values
+of $f$.
+
+
+\subsection{Testing the characteristics of the OH Time Series}
+
+
+\begin{table}
+%\begin{center}
+%\begin{minipage}{140mm}
+
+\caption{Basic function used to model effects in the OH time
+series.} 
+\label{tbl:tsttschar}
+
+\begin{tabular}{|l|l|}
+
+\hline
+\multicolumn{2}{c}{Characteristics of Function} \\
+
+\hline
+
+Function & Cosine \\
+Lags & 10$^\circ$ -- 360$^\circ$ in steps of 10$^\circ$ \\
+Sampling Interval & 300 points / cycle = 1.2$^\circ$/interval \\
+
+\hline
+
+\end{tabular}
+%\end{centre}
+%\end{minipage}
+\end{table}
+
+
+
+\begin{table}
+%\begin{center}
+%\begin{minipage}{140mm}
+
+\caption{Parameter settings for modelling effects in the OH
+time series.}
+\label{tbl:parmvartschar}
+
+\begin{tabular}{|l|l|}
+
+\hline
+\multicolumn{2}{c}{Characteristics of Function} \\
+
+\hline
+
+Number of Cycles & 1, 2, 4, 8 cycles \\
+Asymmetry & f = 0.125, 0.25, 0.375 \\
+Linear Trend & 0.5, 0.25, $-0.5\times$ p-p amplitude \\
+Sampling Interval & random perturbations with $\sigma$ = \\
+ & 0.1, 0.2, 0.3 of sampling interval \\
+Noise & 0.05, 0.5$\times$ p-p amplitude \\
+
+\hline
+
+\end{tabular}
+%\end{centre}
+%\end{minipage}
+\end{table}
+
+
+\subsubsection{Number of cycles of data and start phases of time series}
+
+Several of the sources in the HartRAO OH monitoring programme had fewer than
+two cycles of data, but cross-correlation functions are derived on the
+assumption of an infinite time series.  \citet{Welsh99} and \citet{Vio01}
+have shown that time series with few cycles of data can severely affect the
+accurate determination of phase lags.  
+
+Thus the first test was of the bias, 
+i.e. the output phase lag minus the input phase lag, 
+as a function of start phase and input phase lag, for one cycle of data.
+Synthetic data were created using equation (6) and as shown in
+Table~\ref{tbl:tsttschar}.  While
+lags of up to a full period are not encountered in OH/IR stars, they 
+may occur elsewhere.
+
+The results for a single cycle are shown in Figure~\ref{fig:tohtsch}a.  The
+bias is clearly dependent on both the input lag and the start phase, and is
+symmetric about 180$^\circ$.  For the two test OH/IR stars, the actual lags
+between channel pairs are up to 34$^\circ$ for OH357.3--1.3 (maximum lag 200
+days over a period of $\sim2100$ days, between extreme outlying channels)
+and up to 26$^\circ$ for WX Psc (maximum lag of 47 days, period $\sim650$
+days, between channels with extremely weak signal to noise ratios).  It can
+be seen that this can produce a bias of $\sim10^\circ$, the direction
+depending on the start phase of the observations. Hence for OH/IRs, a
+potentially significant systematic error is possible if only a single cycle
+of data is available.
+
+
+\begin{figure}
+\resizebox{\hsize}{!}{\includegraphics[clip,angle=0]{tohtsch.ps}}
+\caption{Results of tests for (a) a single cycle of pure cosine data with
+different start phases, (b) one to eight cycles of pure cosine data with
+different start phases (the start phases shown are those giving the largest
+positive and negative biases), (c) a single cycle of data with an asymmetry
+factor of 0.375 and different start phases (the input function is shown at
+bottom left) and (d) a single cycle of data with positive variations in
+amplitude equal to half the amplitude and different start phases (the input
+function is shown at bottom left).}
+\label{fig:tohtsch}
+\end{figure}
+
+
+We expect increasing the number of cycles to decrease the bias, and
+this was confirmed by the tests.  
+The effects of bias decreased markedly as the number of cycles 
+was increased (Table~\ref{tbl:parmvartschar}), 
+as shown in Figure~\ref{fig:tohtsch}b.  
+The output bias typically halved every time the number of cycles doubled,
+and was reduced to ranging between
+$-0.8^\circ$ and $+1.7^\circ$ for eight cycles.  
+The pattern of the bias as a function of input
+lag and start phase remained similar to that for a single cycle as the
+number of cycles increased.
+
+
+\subsubsection{Asymmetry}
+
+Asymmetry was introduced as indicated in Table~\ref{tbl:parmvartschar}.  The
+inset in Figure~\ref{fig:tohtsch}c shows the light curve for an asymmetry
+factor f of 0.375.  Comparison with with Figure~\ref{fig:tohtsch}a shows
+systematic alterations in the bias curves.  The introduction of asymmetric
+light curves also destroyed the symmetry about $180^\circ$ noted for the
+pure cosine waveform and changed the amplitude of the bias.
+
+\subsubsection{Non-Stationarity}
+
+The introduction of non-stationarity as a linear trend
+(Table~\ref{tbl:parmvartschar}) is shown in \ref{fig:tohtsch}d.  The inset
+shows the effect on the light curve of a modulation of peak-to-peak
+amplitude 0.25.  The pure cosine waveform is deformed in a manner similar to
+the asymmetry, but in this example in the opposite sense.  Not surprisingly,
+the bias curves are again affected, but in the opposite sense to the
+asymmetry test.
+
+\citet{Welsh99} also investigated the effects of modulations on AGN time series
+and recommended detrending the data as a
+solution to the problems of bias introduced by non-stationary behaviour. 
+While this is an alternative way of dealing with modulations
+in amplitude, it involves altering the data prior to determining the lag,
+an approach which was deliberately avoided here.
+
+\subsubsection{Zero Lag Features}
+
+Features with zero lag were added in accordance with equation (6), modelled
+on features seen in the spectra from OH357.3-1.3.  However this had no
+effect on the bias.  This was not unexpected as, in accordance with
+recommendations by EK88, pairs of points in the time series with zero lag
+between them were excluded from the DCF calculation.
+
+\subsubsection{Irregular Sampling and Noise}
+
+When irregular sampling and noise were introduced
+(Table~\ref{tbl:parmvartschar}), the bias became randomised in proportion to
+the degree of irregular sampling and noise introduced into the time series. 
+This is consistent with the results of \citet{Welsh99} for AGNs.
+
+
+
+\section{Applying the DCF to the OH Time Series}
+
+
+\subsection{Applying the DCF Method}
+
+Phase lags were initially determined for all non-redundant pairs of
+channels, with errors estimated by Monte Carlo simulation (Section 4).  Next
+the characteristics of each channel were scrutinised and channels were
+selectively rejected in stages according firstly to whether their behaviour
+was consistent with the spherical shell model and secondly on their signal
+to noise ratio and how this impacted on the weighted mean phase lag. Each
+estimate of the lag across the OH shell was calculated using a weighted mean
+of the lag per channel from all channel pairs selected as described above,
+multiplied by the number of channels taken as defining the outer edges of
+the (assumed spherical) OH shell.
+
+
+\subsection{Phase Lag for OH357.3--1.3}
+
+Of the 56 channels selected, 30 were taken from the blue--shifted side of
+the spectrum, with velocities ranging from $-41.820$ to $-28.339$ kms$^{-1}$
+(channels 1 to 30), while 26 were selected from the red--shifted side of the
+spectrum, with velocities ranging from $-12.998$ to $-1.376$ kms$^{-1}$
+(channels 31 to 56).  The time series data for OH357.3--1.3 were good: they
+were well sampled, there were no large gaps in the sampling and the signal
+to noise ratio was generally high (Figure~\ref{fig:oh357tsp}).  However, with 
+only 1.5 cycles of data, the effects of bias could
+be not be neglected. 
+
+To identify channels fitting the spherical shell model, and those which are
+outliers, the phase lags of all channels were plotted, using channel 5 as a
+phase reference (Figure~\ref{fig:oh357l5s}). Some channels depart
+significantly from the linear regression characteristic of a spherical
+shell, particularly channels 1, 2, 3, 50, 53, 55 and 56.
+
+To further facilitate outlier identification, the weighted means of the lags
+per channel were plotted against the weighted standard deviations of the
+lags per channel (Figure~\ref{fig:oh357acn}).  The majority of channels
+cluster above channel 54, while the outliers spread out to the sides.  In
+particular, channels 1, 2, 3, 50, 55 \& 56 show larger lags per channel and
+a linear trend which is indicative OH beyond the main shell with linear
+outflow.  Channels 15, 35, 49 \& 53 have smaller lags per channel and are
+more randomly distributed, indicating clumps of OH closer to the star than
+the main shell.  From Figure~\ref{fig:oh357l5s} it is clear that channels
+1--3 lie on the near side of the shell, while channels 50, 55 \& 56 lie on
+the far side.
+
+
+\begin{figure}
+\resizebox{\hsize}{!}{\includegraphics[clip,angle=270]{oh357l5s.ps}}
+\caption{Phase lags from all channels selected for OH357.3--1.3, using
+channel 5 as the reference channel.  A linear regression is fitted through
+lags from all channels, excluding those from outlying channels.}
+\label{fig:oh357l5s}
+\end{figure}
+
+\begin{figure}
+\resizebox{\hsize}{!}{\includegraphics[clip,angle=270]{oh357acn.ps}}
+\caption{Phase lags per channel for all channels selected for OH357.3-1.3,
+showing the difference between lags from standard channels and outliers.}
+\label{fig:oh357acn}
+\end{figure}
+
+
+Referring to the time series shown in Figure~\ref{fig:oh357tsp}, channels 5,
+30, 40 \& 54 are representative of the channels fitting the spherical shell.
+The other time series represent the identified outliers.  Their light curves
+are clearly different. This is most strikingly seen in the three adjacent
+channels 53, 54 and 55. Channel 54 is the brightest red-shifted peak. 
+Channels 55 and 56 lag significantly behind channel 54: the second maximum
+had not yet been reached when observing ended.  By contrast, channel 53
+leads all the other channels on the red-shifted side of the spectrum. While
+all three channels are adjacent in terms of velocity, the two atypical
+channels are evidently spatially separated from the main OH shell.
+
+Defining the outer edges of the shell for OH357.3--1.3 as the most extreme
+blue- and red-shifted channels not found to be outliers (channels 4 \& 54,
+at $-40.425$kms$^{-1}$ \& $2.306$kms$^{-1}$ respectively) the phase lag
+including all 56 channels is $43\pm35$ days. On the basis of
+Figures~\ref{fig:oh357tsp}, \ref{fig:oh357l5s} and \ref{fig:oh357acn},
+channels 1, 2, 3, 15, 35, 49, 50, 53, 55 \& 56 were classed as outliers and
+removed from the estimate of the mean phase lag.  The phase lag is then
+$37\pm16$ days, so that the error has more than halved by removing only
+$\sim20\%$ of the channels.
+
+
+The effect of channels with low signal to noise ratios was also
+investigated.  Removal of the six non-outlying channels with the highest
+standard deviations (26 to 31) changed the phase lag from $37\pm16$ days to
+$38\pm14$ days.  Removal of a further 15 channels with high standard
+deviations (17 to 25, 32 to 34 \& 37 to 39), resulted in a phase lag of
+$38\pm11$ days. The removal of both these sets of channels only altered the
+phase lag by $\sim3\%$, whereas the removal of oultiers had changed the
+phase lag by $\sim15\%$.  Channels with a low signal to noise ratio
+increased the error in the phase lag, without significantly affecting the
+value of the lag.  Finally, using only the four brightest channels the phase
+lag was $37\pm5$ days.
+
+The initial lag obtained when outliers were included agrees within the
+errors given here with the lag of 50 days obtained by \citet{West92}.  At
+that time the authors were unaware that some of the channels represented
+outlying OH and these channels were used in the calculation of the final
+lag.  The error analysis for the earlier method was not robust and hence the
+error estimate for those data was extremely optimistic.
+
+
+\subsection{Estimating the Bias for OH357.3--1.3}
+
+Model data were created using equation (6), with the parameters period =
+2075$\pm25$ days, number of cycles = 1.51$\pm0.02$, asymmetry factor =
+$0.385\pm0.01$, start phase = $920\pm50$ days.  The increases in amplitude
+from minimum to minimum and maximum to maximum were measured and applied. 
+For variations in the minima the fractional change was $0.253\pm0.02$ per
+cycle and for the maximum it was $0.246\pm0.05$ per cycle.
+
+The measured phase lag is strongly weighted by the values for the main
+peaks, so it is appropriate to correct for the bias for a lag of 37 days,
+which the simulation indicates is $\sim-21\%$, or --10 days.  The corrected
+phase lag is then 47 days.
+
+Results for the OH which lies outside the main shell are shown in
+Table~\ref{tbl:outliers}.  The bias has been calculated for each of the
+outlying channels listed.  The values were not included in the calculations
+of the distance of the outlying OH from the star, as they are small enough
+not to make a significant difference.
+
+
+\begin{table*}
+%\begin{center}
+%\begin{minipage}{140mm}
+
+\caption{Outlying OH in OH357.3--1.3.}
+\label{tbl:outliers}
+
+\begin{tabular}{|c|c|r|r|r|r|r|}
+
+\hline
+
+\multicolumn{2}{c}{Channel} &
+\multicolumn{2}{c}{Phase Lag (days)} &
+\multicolumn{1}{c}{Bias} &
+\multicolumn{2}{c}{Radius} \\
+
+\multicolumn{1}{c}{Number} &
+\multicolumn{1}{c}{Reference} &
+\multicolumn{1}{c}{Reference Channel} &
+\multicolumn{1}{c}{Star} &
+\multicolumn{1}{c}{(days)} &
+\multicolumn{1}{c}{$\times10^{16}$cm} &
+\multicolumn{1}{c}{$\times10^{3}$AU} \\
+
+
+\hline
+
+1 & 4 & $-24\pm3$ & $-41\pm4$ & 3 & 
+ $10.62\pm0.1$ & $7.10\pm0.7$ \\
+2 & 4 & $-12\pm3$ & $-29\pm4$ & 1 &
+ $7.52\pm0.1$ & $5.02\pm0.7$ \\
+3 & 4 & $-20\pm3$ & $-37\pm4$ & 3 &
+ $9.59\pm0.1$ & $6.41\pm0.7$ \\
+50 & 54 & $28\pm3$ & $48\pm4$ & 2 &
+ $11.66\pm0.1$ & $7.80\pm0.7$ \\
+55 & 54 & $52\pm3$ & $69\pm4$ & 2 &
+ $17.89\pm0.1$ & $11.96\pm0.7$ \\
+56 & 54 & $104\pm6$ & $121\pm6$ & -4 &
+ $31.36\pm0.2$ & $20.97\pm1.0$ \\
+
+\hline
+
+\end{tabular}
+%\end{centre}
+%\end{minipage}
+\end{table*}
+
+
+\subsection{Phase Lag for WX Psc}
+
+
+The spectrum of WX Psc provides only a comparatively small number of
+channels from which to determine the phase lag (Figure~\ref{fig:wxtsalp}).
+The data comprised six cycles, of which the cycles 1 and 2 were of poor
+quality, being noisy and with gaps of up to half a cycle
+(Figure~\ref{fig:wxtsalp}).  Tests showed that such gaps could seriously
+bias the lag.  Cycles 3 -- 6 were generally good: they were
+relatively well sampled and the signal to noise ratio was reasonable.  Cycle
+6 had the best quality, being sampled at one week intervals. Cycle 7 was
+incomplete and noisy and was omitted.
+
+\begin{table*}
+%\begin{center}
+%\begin{minipage}{140mm}
+
+\caption{Results for WX Psc.}
+\label{tbl:reswxpsc}
+
+\begin{tabular}{|l|l|l|l|l|l|}
+
+\hline
+
+\multicolumn{1}{c}{} &
+\multicolumn{5}{c}{Phase Lag (days)} \\
+
+\multicolumn{1}{c}{Channels Used} &
+\multicolumn{1}{c}{Cycles 3 -- 6} &
+\multicolumn{1}{c}{Cycle 3} &
+\multicolumn{1}{c}{Cycle 4} &
+\multicolumn{1}{c}{Cycle 5} &
+\multicolumn{1}{c}{Cycle 6} \\
+
+
+\hline
+
+All Channels &  $31\pm11$ & $34\pm23$ &
+ $32\pm9$ & $36\pm19$ & $31\pm10$ \\
+10 Brightest Channels &  $31\pm11$ & $33\pm22$ &
+ $32\pm9$ & $36\pm14$ & $31\pm10$ \\
+6 Brightest Channels & $32\pm8$ &  $35\pm14$ &
+ $30\pm6$ & $31\pm10$ & $32\pm7$ \\
+4 Brightest Channels & $29\pm6$ & $30\pm8$ &
+ $32\pm6$ & $31\pm2$ & $29\pm5$ \\
+
+\hline
+
+\end{tabular}
+%\end{centre}
+%\end{minipage}
+\end{table*}
+
+
+In contrast to OH357.3--1.3, there is a predominance of outliers: the
+channels do not behave as would be expected for a uniformly expanding
+spherical shell, a result consistent with its narrow-peaked spectrum
+(Figure~\ref{fig:wxpscsp}). The weighted means of the lags per channel
+versus the weighted standard deviations of the lags per channel are shown in
+Figure~\ref{fig:fstat4cn} as an alternative visualisation of this.
+
+
+\begin{figure}
+\resizebox{\hsize}{!}{\includegraphics[clip,angle=270]{fstat4cn.ps}}
+\caption{Phase lags per channel for all channels selected for WX Psc.}
+\label{fig:fstat4cn}
+\end{figure}
+
+The effect of omitting channels starting with those with the lowest signal
+to noise ratio is shown in Table~\ref{tbl:reswxpsc}. Initially the three
+weakest inner channels were omitted (6, 7 \& 8), then the next four weakest
+channels (1, 5, 9 \& 13) and finally all but the four brightest channels
+were omitted (4 \& 10 omitted, 2, 3, 11 \& 12 retained).  This produces
+little change in the phase lag, but the error estimate is typically halved. 
+What is not known is how representative the brightest channels are of the
+(assumed) spherical shell, but we define the outer edges of the shell as the
+blue- and red-shifted channels least resembling outliers
+(Figures~\ref{fig:fstat4cn} \& \ref{fig:pldiags}): channels 2 \& 11, at
+$-9.521$kms$^{-1}$ \& $26.739$kms$^{-1}$ respectively.
+Figure~\ref{fig:pldiags} shows the lags using channel 2 as a reference, with
+a linear regression fitted through the six brightest channels.
+
+
+\begin{figure}
+\resizebox{\hsize}{!}{\includegraphics[clip,angle=270]{pldiags.ps}}
+\caption{Phase lags from all channels used for WX Psc, with channel 2
+as the reference.  A linear regression is fitted through the lags
+for the six brightest channels.}
+\label{fig:pldiags}
+\end{figure}
+
+
+The data were tested to see if any change in OH shell size could be seen
+over the monitoring period. Phase lags were calculated for individual cycles
+and compared (Table~\ref{tbl:reswxpsc}).  Within the errors, there is no
+evidence for changes in shell size over the four cycles.  The error
+estimates indicate that data for the 4th \& 6th cycles are more reliable
+than those for the 3rd \& 5th (see also Figure~\ref{fig:fstata4c}).  It
+appears that the best result obtained for the 5th cycle, using only the four
+brightest channels.  That this is spurious can be clearly seen from
+figure~\ref{fig:fstata4c}: results for channels 2 \& 3 and 11\& 12 almost
+coincide, thus the small error is the result of small number statistics
+rather than superior data.
+
+
+\begin{figure}
+\resizebox{\hsize}{!}{\includegraphics[clip,angle=270]{fstata4c.ps}}
+\caption{Phase lags per channel for individual cycles of data for WX Psc. 
+Arrows indicate where channels lie off the graph.}
+\label{fig:fstata4c}
+\end{figure}
+
+
+\subsection{Estimating the Bias for WX Psx}
+
+The model data used the following parameters from the actual data: period =
+645$\pm10$ days, number of cycles = 4.0, asymmetry factor = $0.45\pm0.01$,
+start phase = $320\pm15$ days.  For linear modulations, the fractional
+change in the maxima value = $0.60\pm0.02$ per cycle and for the minima
+= $0.37\pm0.06$ per cycle.
+
+The phase lag for the brightest channels, which dominate the weighted mean
+lag estimate, is about 29 days. The simulations show that the bias for this
+lag, over 4 cycles, was $\sim-6\%$, or $-2$ days. This implies that best
+estimate the lag in WX Psc is $31\pm6$ days. This can be compared with
+estimate of $34.0\pm5.6$ days using independent data, obtained by
+\citet{vLvdHvS90}.
+
+
+\section{Derived Parameters for the OH/IR stars}
+
+\subsection{Data sources}
+
+OH shell size estimates are available for both stars, permitting their
+distances to be calculated.  As the fluxes for both sources were
+concentrated in the IR, Their total fluxes were obtained by integrating
+fluxes from NIR observations of the sources made at the South African
+Astronomical Observatory (SAAO), fluxes estimated from the Infrared
+Astronomical Satellite (IRAS) Low Resolution Spectrograph (LRS) spectrum for
+WX Psc \citep{VolkCohen89}, and the IRAS fluxes from the IRAS Point Source
+Catalogue (PSC).  Bolometric luminosities could then be calculated for the
+sources.
+
+
+\subsection{Derived Parameters for OH357.3--1.3}
+
+Using the phase lag estimate of $47\pm5$ days the resultant shell radius is
+$(6.091\pm0.648)\times 10^{16}$cm, or $4.072\times 10^{3}$AU.  Taking the
+angular radius as 3.01$\pm0.14$ arcsec, as determined from MERLIN
+\citep{Shepherd91,Shepherd93} the distance to OH357.3--1.3 becomes
+$1.346\pm0.14$ kpc.  This can be compared with the distance of $0.99$
+determined by \citet{OliWhtlkMar01} using the period-luminosity relation.
+
+The distance combined with the mean integrated infrared flux of 5.0$\times
+10^{-10}$Wm$^{-2}$ implies a bolometric luminosity of $-6.3\pm0.7$ for
+OH357.3--1.3, which is in agreement with that of $-6.17$ obtained by
+\citet{OliWhtlkMar01}.  This corresponds to a luminosity of $(27\pm3)\times
+10^{3} L_\odot$.  The bolometric luminosity implies that the mass of the
+progenitor star could have ranged from $\sim??-??$ solar masses (e-mail PAW)
+\citep{IbenRen83}.  AGB stars with progenitor masses less than eight solar
+masses do not ignite carbon in their core and their luminosities can range
+from $\sim2 - 70\times 10^{3} L_\odot$ \citep{IbenRen83}.
+
+The channels lying outside the main peaks (1, 2, 3, 50, 55, 56,
+Figure~\ref{fig:oh357tsp}) show phase lags that deviate systematically from
+the trend of the channels within the main peaks (Figure~\ref{fig:oh357l5s}). 
+Their behaviour is consistent with their being emission from OH lying
+outside the main shell of OH masers.  The gas has evidently almost reached
+terminal velocity, given the small velocity range ($\sim1$kms$^{-1}$) from
+the end of the emission to the brightest blue- and red-shifted peaks. The
+phase lags of these channels relative to the central star and their
+respective radii are shown in Table~\ref{tbl:outliers}.  The OH giving rise
+to the maser radiation in these channels lies at distances from about two to
+seven times the main shell radius.  The OH for the majority of these
+channels lies between two and three times the shell radius from the star. 
+The OH represented by channels 55 \& 56 however lies at four and seven times
+the shell radius respectively.
+
+
+\subsection{Derived Parameters for WX Psc}
+
+Assuming the spherical shell model and using a phase lag of $31\pm6$ days,
+implies a shell of radius $(4.018\pm0.78)\times 10^{16}$cm, or
+$2.69\times 10^3$ AU.  The angular radius of 4.4 arcsec was determined from
+the VLA by \citet{BowJS83}.  The distance is then $0.61\pm0.12$ kpc.  This
+agrees within the errors with the distance of $0.74\pm0.15$ obtained by
+\citet{vLvdHvS90} using the phase lag method and is therefore in agreement
+with that of 0.74 from \citet{OliWhtlkMar01} using the period-luminosity
+relation.
+
+The mean infrared flux is $7.0\times10^{-10}$Wm$^{-2}$.  At the inferred
+distance this leads to a bolometric luminosity of $-5.0\pm1.1$, which is in
+agreement with that of $-5.35$ obtained by \citet{OliWhtlkMar01} and
+corresponds to a luminosity of $(8\pm2)\times 10^3 L_\odot$. 
+\citet{vLvdHvS90} obtained a luminosity of $39.4\times 10^3 L_\odot$ for WX
+Psc which appears to be in error.  The bolometric luminosity implies that
+the mass of the progenitor star could have ranged from $\sim??-??$ solar
+masses (e-mail PAW) \citep{IbenRen83}.
+
+
+\section{Discussion}
+
+The data used to test the DCF method were well sampled but have a very large
+range of signal to noise ratio.  The DCF proved to be a suitable method to
+apply to these data.  Synthetic data closely modelled on the real data
+confirmed this and permitted critical points to be tested, for example
+having data with little more than one cycle, of asymmetric form and changing
+significantly from one cycle to the next.  These simulations showed that
+bias is a significant factor in data with few cycles.  Monte Carlo
+simulations were used to obtain realistic error estimates.
+
+Turning to the data on the two OH/IR stars, for OH357.3-1.3, the phase lag
+per channel for most channels is consistent with their lying in a spherical
+shell in a symmetric outflow.  Four channels appear to derive from clumps
+closer to the central star (15, 35, 49 \& 53), by virtue of their lag per
+channel being substantially smaller than the mean.  The OH at the edges of
+the spectrum show much larger phase lags than the main shell and are
+evidently blowing away at almost terminal velocity at up to seven times the
+radius of the main OH shell.
+
+The narrow peaks in the spectrum of WX Psc indicate that it does not have a
+thick, uniformly expanding spherical shell and the phase lags per channel
+confirm this.
+
+Examination of the data showed that channels with low signal to noise ratios
+increased the error in the phase lag estimate without radically affecting
+the value of the lag.  Thus it is important to examine the time series data
+carefully to determine (i) whether there are any channels which are not part
+of the main shell and (ii) what minimum set of channels should be retained
+in order to give a reliable estimate of the lag with the smallest reasonable
+estimate of the error.
+
+The distances calculated using the phase lags from the DCF method agreed
+with results obtained using the period-luminosity relation
+\citep{OliWhtlkMar01}.  The distance obtained for WX Psc also agreed with
+that of \citet{vLvdHvS90} using independent time series data.  Calculations
+of bolometric luminosities showed that these sources have progenitor masses
+within the range of those expected for oxygen-rich AGB stars and that the
+progenitor mass of the source with the shorter period (WX Psc) is lower than
+that of the longer period source (OH357.3-1.3).
+
+Tests showed that while WX Psc was monitored over several cycles, there was
+no indication of change in the size of the OH maser shell.  Thus for this
+source, while the dust expands outwards, the location of the masers remains
+relatively constant.
+
+      
+   
+\section*{Acknowledgements}
+
+The authors thank staff at HartRAO who
+helped with running the observations.
+
+%\clearpage
+
+
+\bibliographystyle{mn2e}
+\bibliography{mn-jour,refs-adsabs.bib}
+\label{lastpage}
+\end{document}
