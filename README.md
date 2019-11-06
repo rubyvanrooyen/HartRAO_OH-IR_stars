@@ -14,7 +14,7 @@ NRF's prior written consent.
 [OH-IR stars](https://bitbucket.org/r_et_d/oh-ir-stars/src/master/)
 
 ## Usage
-[](https://bitbucket.org/r_et_d/oh-ir-stars/wiki/Home)
+[Wiki](https://bitbucket.org/r_et_d/oh-ir-stars/wiki/Home)
 
 
 ## Notebooks
