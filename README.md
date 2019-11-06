@@ -7,11 +7,22 @@ for which it was disclosed and may not be disclosed to anyone or be used for any
 NRF's prior written consent.
 
 
-## TOC
-`HartRAO`     
+## Installation
+
+
+## Code
+[OH-IR stars](https://bitbucket.org/r_et_d/oh-ir-stars/src/master/)
+
+## Usage
+[](https://bitbucket.org/r_et_d/oh-ir-stars/wiki/Home)
+
+
+## Notebooks
 Fitting of smoothing functions to data in order to detrend data and/or identify outliers     
 Finding periods for data cycles
 
+
+## TBD
 `paper`      
 Draft paper with references
 Also see online collaboration:      

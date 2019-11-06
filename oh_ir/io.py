@@ -20,7 +20,7 @@ def readfile(filename):
 
     timestamps = file_data[:,0]
     spectra = file_data[:,1:]
-    
+
     return [chan_vel, timestamps, spectra]
 
 # -fin-
