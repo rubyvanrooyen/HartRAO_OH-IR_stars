@@ -10,6 +10,10 @@ def cli_common_output(parser):
             title='output options',
             description='results and output display options')
     group.add_argument(
+        '-s', '--save',
+        action='store_true',
+        help='save figure as PNG to working directory')
+    group.add_argument(
         '-v', '--verbose',
         action='store_true',
         help='verbose display of input data and output results')
@@ -45,6 +49,12 @@ def cli_common_input(parser):
             help='specific channels of interest')
 
 
+def cli_common(parser):
+    # add common input arguments
+    cli_common_input(parser)
+    # add common output arguments
+    cli_common_output(parser)
+
 def cli_periodogram():
     usage = "%(prog)s [options]"
     description = 'period calculation with Lomb-Scargle method'
@@ -53,15 +63,13 @@ def cli_periodogram():
             usage=usage,
             description=description,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    # add common input arguments
-    cli_common_input(parser)
     # periodogram specific input arguments
     parser.add_argument(
             '--phase',
             action='store_true',
             help='fold phase using using LS periodogram calculated')
     # add common output arguments
-    cli_common_output(parser)
+    cli_common(parser)
 
     return parser.parse_args()
 

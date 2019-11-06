@@ -1,0 +1,12 @@
+
+# /
+.eggs
+*.egg-info
+*.pyc
+*~
+nosetests.xml
+.idea/
+.pyenv*/
+
+venv/
+venv2/
