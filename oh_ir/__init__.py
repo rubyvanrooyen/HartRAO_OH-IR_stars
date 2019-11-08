@@ -1,4 +1,5 @@
 
+from . import detrend  # noqa
 from . import display  # noqa
 from . import io  # noqa
 from . import main  # noqa
