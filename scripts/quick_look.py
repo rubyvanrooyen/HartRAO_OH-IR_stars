@@ -23,6 +23,7 @@ def cli():
 
 if __name__ == '__main__':
     args = cli()
+
     [chan_vel,
      timestamps,
      spectra,
@@ -31,7 +32,10 @@ if __name__ == '__main__':
                        tsformat=args.tsformat)
 
     if args.channel is None:
-        channels = range(len(chan_vel))
+        for channel in range(len(chan_vel)):
+            print('Channel {} has line velocity {} km/s'.format(
+                channel, chan_vel[channel]))
+        quit()
     else:
         channels = args.channel
 

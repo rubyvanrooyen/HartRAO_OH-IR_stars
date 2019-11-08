@@ -5,7 +5,7 @@ from __future__ import print_function
 import matplotlib.pylab as plt
 import os
 
-from oh_ir import io, util
+from oh_ir import io, util, periodogram
 from oh_ir import main, display
 
 
@@ -33,8 +33,8 @@ if __name__ == '__main__':
          frequency,
          power,
          best_period,
-         best_freq] = util.ls_periodogram(ts_jd,
-                                          chan_data - chan_data.mean())
+         best_freq] = periodogram.lomb_scargle(ts_jd,
+                                               chan_data - chan_data.mean())
 
         # output to display
         chan_velocity = 'Line velocity {} km/s'.format(chan_vel[channel])
@@ -68,10 +68,10 @@ if __name__ == '__main__':
             # Plot folded lightcurve
             [phase,
              phase_fit,
-             mag_fit] = util.fold_phase(ts_jd,
-                                        chan_data - chan_data.mean(),
-                                        best_period,
-                                        best_freq)
+             mag_fit] = periodogram.ls_fold_phase(ts_jd,
+                                                  chan_data - chan_data.mean(),
+                                                  best_period,
+                                                  best_freq)
             fig, ax = display.folded_phase(best_period*phase,
                                            chan_data - chan_data.mean(),
                                            best_period*phase_fit,
