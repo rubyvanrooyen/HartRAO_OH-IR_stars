@@ -5,7 +5,8 @@ import numpy as np
 
 
 def lomb_scargle(ts_jd, values):
-    ls = stats.LombScargle(ts_jd.value, values)
+    # ls = stats.LombScargle(ts_jd.value, values)
+    ls = stats.LombScargle(ts_jd, values)
     frequency, power = ls.autopower()
     period = 1./frequency  # period is the inverse of frequency
     # period with most power / strongest signal
@@ -18,11 +19,13 @@ def lomb_scargle(ts_jd, values):
 def ls_fold_phase(ts_jd, values, period, frequency):
     # light curve over period, take the remainder
     # (i.e. the "phase" of one period)
-    phase = (ts_jd.value / period) % 1
+    # phase = (ts_jd.value / period) % 1
+    phase = (ts_jd / period) % 1
 
     # compute model fitted values
     phase_fit = np.linspace(0., 1.)
-    mag_fit = stats.LombScargle(ts_jd.value,
+    # mag_fit = stats.LombScargle(ts_jd.value,
+    mag_fit = stats.LombScargle(ts_jd,
                                 values).model(t=phase_fit/frequency,
                                               frequency=frequency)
     return [phase, phase_fit, mag_fit]
