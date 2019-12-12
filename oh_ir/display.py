@@ -5,47 +5,51 @@ import matplotlib.pylab as plt
 
 
 def inputdata(chan_velocity,
-              mean_spectra_ax0,
+              mean_spectrum,
               datetime,
-              mean_spectra_ax1,
-              label=None):
-    fig, ax = plt.subplots(figsize=(17, 5),
-                           nrows=1,
-                           ncols=2,
+              timeseries):
+    n_ts, n_data = timeseries.shape
+    fig, ax = plt.subplots(figsize=(17, 9),
+                           nrows=2,
+                           ncols=1,
                            facecolor='white')
     ax[0].plot(chan_velocity,
-               mean_spectra_ax0,
-               'k--',
-               label=label)
+               mean_spectrum,
+               'k--')
     ax[0].set_xlabel('velocity [km/s]')
     ax[0].set_ylabel('avg flux [Jy]')
-    ax[1].plot(datetime,
-               mean_spectra_ax1,
-               'k.',
-               label=label)
-    ax[1].set_xlabel('time [JD - 2440000]')
-    ax[1].set_ylabel('avg flux [Jy]')
-
-    if label is not None:
-        ax[1].legend(loc='upper center',
-                     bbox_to_anchor=(0.5, 1.05),
-                     ncol=3,
-                     numpoints=1,
-                     fancybox=True,
-                     shadow=True)
+    colors = ['b', 'r', 'k']
+    for idx in range(n_data):
+        ydata = timeseries[:, idx]
+        ax[1].plot(datetime,
+                   ydata,
+                   color=colors[idx],
+                   marker='.',
+                   linestyle='-')
+        ax[1].set_xlabel('date')
+        ax[1].set_ylabel('avg flux [Jy]')
 
     return fig, ax
 
 
 def timeseries(xdata,
                ydata,
-               label=None):
-    fig = plt.subplots(figsize=(17, 3),
-                       facecolor='white')
-    ax = plt.subplot(111)
+               label=None,
+               color='k',
+               marker='.',
+               linestyle=':',
+               fig=None,
+               ax=None,
+               ):
+    if ax is None:
+        fig = plt.subplots(figsize=(17, 5),
+                           facecolor='white')
+        ax = plt.subplot(111)
     ax.plot(xdata,
             ydata,
-            'b.',
+            c=color,
+            marker=marker,
+            ls=linestyle,
             label=label)
 
     if label is not None:
@@ -57,11 +61,21 @@ def timeseries(xdata,
 def periodogram(period,  # days
                 power,
                 best_period=None,  # days
-                label=None):
-    fig = plt.subplots(figsize=(10, 7),
-                       facecolor='white')
-    ax = plt.subplot(111)
-    ax.plot(period, power, label=label)
+                color='k',
+                marker='',
+                linestyle='-',
+                fig=None,
+                ax=None,
+                ):
+    if ax is None:
+        fig = plt.subplots(figsize=(10, 7),
+                           facecolor='white')
+        ax = plt.subplot(111)
+    ax.plot(period, power,
+            color=color,
+            marker=marker,
+            linestyle=linestyle,
+            alpha=0.3)
     if best_period is not None:
         ax.axvline(best_period, color='r', linestyle=':')
         ax.text(0.03, 0.93,
@@ -71,21 +85,24 @@ def periodogram(period,  # days
     ax.set_xlabel('period (days)')
     ax.set_ylabel('relative power')
 
-    if label is not None:
-        ax.legend(loc=0)
-
     return fig, ax
 
 
-def folded_phase(phase,
+def folded_phase(phase,  # days
                  data,
                  phase_fit,
                  mag_fit,
-                 label=None):
-    fig = plt.subplots(figsize=(10, 7),
-                       facecolor='white')
-    ax = plt.subplot(111)
-    ax.plot(phase, data, label=label,
+                 color='k',
+                 marker='',
+                 linestyle='-',
+                 fig=None,
+                 ax=None,
+                 ):
+    if ax is None:
+        fig = plt.subplots(figsize=(10, 7),
+                           facecolor='white')
+        ax = plt.subplot(111)
+    ax.plot(phase, data,
             marker='.',
             ms=10,
             ls='none',
@@ -95,9 +112,6 @@ def folded_phase(phase,
     ax.plot(phase_fit, mag_fit)
     ax.set_xlabel('phase (days)')
     ax.set_ylabel('magnitude')
-
-    if label is not None:
-        ax.legend(loc=0)
 
     return fig, ax
 
