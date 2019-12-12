@@ -1,0 +1,4 @@
+ln -s ../../oh_ir
+./datacompare_helperscript.py --filename iktausRAW.tscat --tsformat mjd --channel 3 --compare iktausMWch.tscat
+./showSPL.py iktausBSP.tsSPL
+
