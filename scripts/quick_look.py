@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import argparse
 import matplotlib.pylab as plt
+import numpy as np
 import os
 
 from oh_ir import display, io, main
@@ -21,37 +22,62 @@ def cli():
     return parser.parse_args()
 
 
+# assume matrix [ts, ch]
+def avg_spectrum(spectra, channel, threshold=0.9):
+    avg_spectra = spectra.mean(axis=0)
+    spectrum = spectra[:, channel]
+    if (avg_spectra[channel-1]/avg_spectra[channel]) > threshold:
+        spectrum = np.vstack([spectra[:, channel-1], spectrum])
+    if (avg_spectra[channel+1]/avg_spectra[channel]) > threshold:
+        spectrum = np.vstack([spectrum, spectra[:, channel+1]])
+    if len(spectrum.shape) > 1:
+        spectrum = spectrum.mean(axis=0)
+    return [avg_spectra, spectrum]
+
+
 if __name__ == '__main__':
     args = cli()
 
-    [chan_vel,
+    # read input data assuming HartRAO format
+    [_,
+     chan_vel,
      timestamps,
      spectra,
      ts_jd] = io.input(args.filename,
                        epoch=args.epoch,
                        tsformat=args.tsformat)
 
+    # red and blue shifted channels are found if not given
+    avg_spectra = spectra.mean(axis=0)
     if args.channel is None:
-        for channel in range(len(chan_vel)):
-            print('Channel {} has line velocity {} km/s'.format(
-                channel, chan_vel[channel]))
-        quit()
+        cen_channel = len(chan_vel)//2
+        blue_ch = np.argmax(avg_spectra[:cen_channel])
+        red_ch = cen_channel + np.argmax(avg_spectra[cen_channel:])
     else:
-        channels = args.channel
+        [blue_ch, red_ch] = args.channel
+
+    # average a couple of channels around peak if flat max
+    [avg_spectra,
+     blue_spectrum] = avg_spectrum(spectra, blue_ch)
+    [_, red_spectrum] = avg_spectrum(spectra, red_ch)
+
+    channels = [blue_ch, red_ch]
+    show_spectra = np.vstack([blue_spectrum, red_spectrum]).T
 
     outfile = os.path.basename(args.filename)
-    outfile = '{}_channels_{}'.format(outfile,
-                                      '_'.join([str(chan) for chan in channels]))
+    outfile = '{}_channels_{}'.format(
+            outfile, '_'.join([str(chan) for chan in channels]))
     outfile = outfile.replace('.', '_')
+
     labels = []
     for channel in channels:
         chan_velocity = 'Line velocity {} km/s'.format(chan_vel[channel])
         labels.append(chan_velocity)
         print('Channel {}\n{}'.format(channel, chan_velocity))
     fig, ax = display.inputdata(chan_vel,
-                                spectra.mean(axis=0),
+                                avg_spectra,
                                 ts_jd.datetime,
-                                spectra[:, channels])
+                                show_spectra)
     ax[0].set_title(outfile)
     ax[1].legend(labels,
                  loc='upper center',
