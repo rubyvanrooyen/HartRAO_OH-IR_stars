@@ -46,6 +46,7 @@ def cli_common_input(parser):
             '--channel',
             type=int,
             nargs='+',
+            metavar=("RED", "BLUE"),
             help='specific channels of interest')
 
 
@@ -71,42 +72,6 @@ def cli_periodogram():
             help='fold phase using using LS periodogram calculated')
     # add common output arguments
     cli_common(parser)
-
-    return parser.parse_args()
-
-
-def cli_outliers():
-    usage = "%(prog)s [options]"
-    description = 'smoothing calculation with Savitzky-Golay method'
-    # parser for smoothing and outlier identification script
-    parser = argparse.ArgumentParser(
-            usage=usage,
-            description=description,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument(
-            '--win',
-            type=int,
-            default=21,
-            help='data smoothing window size')
-    parser.add_argument(
-            '--niter',
-            type=int,
-            default=100,
-            help='max number of iterations')
-    parser.add_argument(
-            '--method',
-            type=str,
-            default='sg',
-            help='fractional occurrence of outliers in strongest 5 channels')
-    parser.add_argument(
-            '--recurrence',
-            type=float,
-            default=None,
-            help='fractional occurrence of outliers in strongest 5 channels')
-    # add common input arguments
-    cli_common_input(parser)
-    # add common output arguments
-    cli_common_output(parser)
 
     return parser.parse_args()
 
