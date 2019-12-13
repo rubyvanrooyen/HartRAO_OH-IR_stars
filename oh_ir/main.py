@@ -2,8 +2,6 @@
 
 from __future__ import print_function
 
-import argparse
-
 
 def cli_common_output(parser):
     group = parser.add_argument_group(
@@ -55,24 +53,5 @@ def cli_common(parser):
     cli_common_input(parser)
     # add common output arguments
     cli_common_output(parser)
-
-
-def cli_periodogram():
-    usage = "%(prog)s [options]"
-    description = 'period calculation with Lomb-Scargle method'
-    # parser for periodogram script
-    parser = argparse.ArgumentParser(
-            usage=usage,
-            description=description,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    # periodogram specific input arguments
-    parser.add_argument(
-            '--phase',
-            action='store_true',
-            help='fold phase using using LS periodogram calculated')
-    # add common output arguments
-    cli_common(parser)
-
-    return parser.parse_args()
 
 # -fin-

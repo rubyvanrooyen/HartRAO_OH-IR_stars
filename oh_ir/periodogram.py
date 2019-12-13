@@ -5,7 +5,6 @@ import numpy as np
 
 
 def lomb_scargle(ts_jd, values):
-    # ls = stats.LombScargle(ts_jd.value, values)
     ls = stats.LombScargle(ts_jd, values)
     frequency, power = ls.autopower()
     period = 1./frequency  # period is the inverse of frequency
@@ -23,8 +22,7 @@ def ls_fold_phase(ts_jd, values, period, frequency):
     phase = (ts_jd / period) % 1
 
     # compute model fitted values
-    phase_fit = np.linspace(0., 1.)
-    # mag_fit = stats.LombScargle(ts_jd.value,
+    phase_fit = np.linspace(0., 1., len(ts_jd))
     mag_fit = stats.LombScargle(ts_jd,
                                 values).model(t=phase_fit/frequency,
                                               frequency=frequency)

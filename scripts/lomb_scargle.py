@@ -2,27 +2,91 @@
 
 from __future__ import print_function
 
+import argparse
+import math
 import matplotlib.pylab as plt
 import numpy as np
-import os
+import sys
 
 from oh_ir import io, util, periodogram
 from oh_ir import main, display
 
 
+# width defines bar width
+# percent defines current percentage
+def progress(niter, width, percent):
+    marks = math.floor(width * (percent / 100.0))
+    spaces = math.floor(width - marks)
+
+    loader = '[' + ('=' * int(marks)) + (' ' * int(spaces)) + ']'
+
+    sys.stdout.write("%d %s %d%% iterations left\r" %
+                     (niter, loader, percent))
+    if percent >= 100:
+        sys.stdout.write("\n")
+    sys.stdout.flush()
+
+
+def best_fit_period(timestamps,
+                    flux,
+                    start_period,
+                    end_period,
+                    nr_period=3600):  # day
+    period_range = np.arange(start_period, end_period, nr_period)
+    means = []
+    stds = []
+    maxs = []
+
+    for idx, the_period in enumerate(period_range):
+        progress(float(idx), 50, (float(idx)/float(len(period_range))*100.))
+        [phase,
+         phase_fit,
+         mag_fit] = periodogram.ls_fold_phase(timestamps,
+                                              flux,
+                                              the_period,
+                                              1./the_period)
+        err = flux[np.argsort(phase)]-mag_fit
+        means.append(np.mean(err))
+        stds.append(np.std(np.abs(err-np.mean(err))))
+        maxs.append(np.max(mag_fit))
+    # dummy print for progress
+    print()
+
+    best_period = period_range[np.argmax(maxs)]
+    return best_period
+
+
+def cli():
+    usage = "%(prog)s [options]"
+    description = 'period calculation with Lomb-Scargle method'
+    # parser for periodogram script
+    parser = argparse.ArgumentParser(
+            usage=usage,
+            description=description,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    # periodogram specific input arguments
+    parser.add_argument(
+            '--phase',
+            action='store_true',
+            help='fold phase using using LS periodogram calculated')
+    parser.add_argument(
+            '--bestfit',
+            action='store_true',
+            help='evaluate folding over a period range to find best fit')
+    # add common output arguments
+    main.cli_common(parser)
+    return parser.parse_args()
+
+
 if __name__ == '__main__':
 
-    args = main.cli_periodogram()
-    [chan_vel, timestamps, spectra] = io.readfile(args.filename)
+    args = cli()
+    [_, chan_vel, timestamps, spectra] = io.readfile(args.filename)
     ts_jd = util.ts2datetime(timestamps,
                              epoch=args.epoch,
                              tsformat=args.tsformat)
 
     if args.channel is None:
-        if args.verbose:
-            msg = ('No channels selected for display, '
-                   'add --channel argument')
-            raise RuntimeError(msg)
         channels = range(len(chan_vel))
     else:
         channels = args.channel
@@ -32,19 +96,24 @@ if __name__ == '__main__':
     for channel in channels:
         flux = spectra[:, channel]
 
-        # fit line to subtract additive functional equation
-        coefs = np.polynomial.polynomial.polyfit(ts_jd.unix,
-                                                 flux, 1)
-        ffit = np.poly1d(coefs[::-1])
-        base_flux = flux - ffit(ts_jd.unix)
-
         # get period of data
         [period,
          frequency,
          power,
          best_period,
          best_freq] = periodogram.lomb_scargle(ts_jd.unix,
-                                               base_flux)
+                                               flux)
+
+        if args.bestfit:
+            # get better fit of period
+            fitted_period = best_fit_period(ts_jd.unix,
+                                            flux,
+                                            best_period/2.,
+                                            2.*best_period,
+                                            360,
+                                            )
+            best_period = fitted_period
+            best_freq = 1./fitted_period
 
         # output to display
         chan_period = 'Data period = {:.3f} seconds'.format(best_period)
@@ -52,10 +121,13 @@ if __name__ == '__main__':
 
         # output to display
         chan_velocity = 'Line velocity {} km/s'.format(chan_vel[channel])
-        chan_period = 'Data period = {:.3f} days'.format(best_period/(24.*3600.))
+        chan_period_sec = 'Data period = {} sec'.format(best_period)
+        best_period_day = best_period/(24.*3600.)
+        chan_period_day = 'Data period = {:.3f} days'.format(best_period_day)
         output_str = 'Selected channel: {}\n'.format(channel)
         output_str += '  {}\n'.format(chan_velocity)
-        output_str += '  {}\n'.format(chan_period)
+        output_str += '  {}\n'.format(chan_period_sec)
+        output_str += '  {}\n'.format(chan_period_day)
         print(output_str)
 
     #     if args.save:
@@ -66,12 +138,12 @@ if __name__ == '__main__':
         if args.verbose:
             if ax is None:
                 fig, ax = display.timeseries(ts_jd.datetime,
-                                             base_flux,
+                                             flux,
                                              label=chan_velocity,
                                              color='b')
             else:
                 fig, ax = display.timeseries(ts_jd.datetime,
-                                             base_flux,
+                                             flux,
                                              label=chan_velocity,
                                              color='r',
                                              fig=fig,
@@ -100,11 +172,11 @@ if __name__ == '__main__':
             [phase,
              phase_fit,
              mag_fit] = periodogram.ls_fold_phase(ts_jd.unix,
-                                                  base_flux,
+                                                  flux,
                                                   best_period,
                                                   best_freq)
             fig_, ax_ = display.folded_phase(best_period*phase/(24.*3600.),
-                                             base_flux,
+                                             flux,
                                              best_period*phase_fit/(24.*3600.),
                                              mag_fit,
                                              fig=fig_,
