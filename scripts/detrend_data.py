@@ -4,6 +4,7 @@ from __future__ import print_function
 from oh_ir import detrend, display, main, io
 import argparse
 import matplotlib.pylab as plt
+import numpy as np
 import os
 
 
@@ -79,6 +80,7 @@ if __name__ == '__main__':
                        epoch=args.epoch,
                        tsformat=args.tsformat)
 
+    detrended_spectra = np.array([])
     for channel in args.channel:
         flux = spectra[:, channel]
 
@@ -87,21 +89,29 @@ if __name__ == '__main__':
                                args.poly)
         base_flux = flux - ffit(ts_jd.unix)
         show_fit(ts_jd, flux, ffit, base_flux)
+        base_flux = base_flux.reshape(len(base_flux), 1)
+        if len(detrended_spectra) < 1:
+            detrended_spectra = base_flux
+        else:
+            detrended_spectra = np.hstack([detrended_spectra, base_flux])
 
         if args.save:
             outfile = os.path.basename(args.filename)
-            [name, ext] = os.path.splitext(outfile)
-            filename = '{}_detrend_channel{}{}'.format(
-                    name, channel, ext)
-            header = '{}\n'.format(name)
-            header += 'MJD,\t{}\n'.format(chan_vel[channel])
-            timestamps = ts_jd.value
-            base_flux = base_flux.reshape(len(base_flux), 1)
-            io.output(filename, header, timestamps, base_flux)
             outfile = '{}_channel_{}'.format(outfile, channel)
             outfile = outfile.replace('.', '_')
             plt.savefig('{}_detrend.png'.format(outfile),
                         bbox_inches='tight')
+
+    if args.save:
+        outfile = os.path.basename(args.filename)
+        [name, ext] = os.path.splitext(outfile)
+        filename = '{}_detrend{}'.format(
+                name, ext)
+        header = '{}\n'.format(name)
+        header += 'MJD,  {}\n'.format(
+                ',  '.join([str(vel) for vel in chan_vel[args.channel]]))
+        timestamps = ts_jd.value
+        io.output(filename, header, timestamps, detrended_spectra)
 
     if args.verbose:
         plt.show()
