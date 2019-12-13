@@ -44,7 +44,8 @@ def cli():
 if __name__ == '__main__':
     args = cli()
 
-    [chan_vel,
+    [_,
+     chan_vel,
      timestamps,
      base_spectra,
      ts_jd] = io.input(args.filename,
@@ -54,9 +55,9 @@ if __name__ == '__main__':
     comp_spectra = []
     comp_jd = []
     for filename in args.compare:
-        [_, _, spectra, jd] = io.input(filename,
-                                       epoch=args.epoch,
-                                       tsformat=args.tsformat)
+        [_, _, _, spectra, jd] = io.input(filename,
+                                          epoch=args.epoch,
+                                          tsformat=args.tsformat)
         comp_spectra.append(spectra)
         comp_jd.append(jd)
 
