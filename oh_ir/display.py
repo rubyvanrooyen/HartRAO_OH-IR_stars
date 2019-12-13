@@ -18,7 +18,7 @@ def inputdata(chan_velocity,
                'k--')
     ax[0].set_xlabel('velocity [km/s]')
     ax[0].set_ylabel('avg flux [Jy]')
-    colors = ['b', 'r', 'k']
+    colors = ['b', 'r']
     for idx in range(n_data):
         ydata = timeseries[:, idx]
         ax[1].plot(datetime,
@@ -38,6 +38,7 @@ def timeseries(xdata,
                color='k',
                marker='.',
                linestyle=':',
+               alpha=1.,
                fig=None,
                ax=None,
                ):
@@ -47,9 +48,10 @@ def timeseries(xdata,
         ax = plt.subplot(111)
     ax.plot(xdata,
             ydata,
-            c=color,
+            color=color,
             marker=marker,
             ls=linestyle,
+            alpha=alpha,
             label=label)
 
     if label is not None:
@@ -115,54 +117,4 @@ def folded_phase(phase,  # days
 
     return fig, ax
 
-
-def show_fit(x,
-             raw_y,
-             process=None,
-             outliers=None,
-             channels=None):
-
-    if channels is None:
-        channels = [0]
-
-    fig, ax = plt.subplots(nrows=len(channels),
-                           ncols=1,
-                           figsize=(17, 2*len(channels)),
-                           sharex=True,
-                           gridspec_kw={'hspace': 0},
-                           facecolor='white')
-
-    for cnt, channel in enumerate(channels):
-        chan_data = raw_y[:, cnt]
-
-        if process is None:
-            label = 'channel {}'.format(channel)
-        else:
-            label = 'Line velocity {} km/s'.format(
-                    process[channel]['velocity'])
-
-        if len(channels) > 1:
-            ax_cnt = ax[cnt]
-        else:
-            ax_cnt = ax
-
-        ax_cnt.plot(x,
-                    chan_data,
-                    'b.',
-                    label=label)
-        if process is not None:
-            chan_clean_data = process[channel]['smooth']
-            if outliers is None:
-                outlier_idx = process[channel]['outliers']
-            else:
-                outlier_idx = outliers
-            ax_cnt.plot(x[outlier_idx],
-                        chan_data[outlier_idx],
-                        'r.')
-            ax_cnt.plot(x, chan_clean_data, 'k-')
-        ax_cnt.legend(loc=0)
-        ax_cnt.set_ylabel('Flux density [Jy]')
-        ax_cnt.set_xlabel('Timestamp')
-
-    return fig
 # -fin-
