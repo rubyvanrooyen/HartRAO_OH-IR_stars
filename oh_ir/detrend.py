@@ -6,6 +6,13 @@ from scipy.signal import savgol_filter as savitzky_golay
 import numpy as np
 
 
+def polyfit(x, y, order):
+    # fit line to subtract additive functional equation
+    coefs = np.polynomial.polynomial.polyfit(x, y, order)
+    ffit = np.poly1d(coefs[::-1])
+    return ffit
+
+
 def running_mean(x, N):
     cumsum = np.cumsum(np.insert(x, 0, 0))
     return (cumsum[N:] - cumsum[:-N]) / float(N)
