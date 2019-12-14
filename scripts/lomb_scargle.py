@@ -6,6 +6,7 @@ import argparse
 import math
 import matplotlib.pylab as plt
 import numpy as np
+import os
 import sys
 
 from oh_ir import io, util, periodogram
@@ -33,10 +34,7 @@ def best_fit_period(timestamps,
                     end_period,
                     nr_period=3600):  # day
     period_range = np.arange(start_period, end_period, nr_period)
-    means = []
-    stds = []
-    maxs = []
-
+    errs = []
     for idx, the_period in enumerate(period_range):
         progress(float(idx), 50, (float(idx)/float(len(period_range))*100.))
         [phase,
@@ -46,13 +44,12 @@ def best_fit_period(timestamps,
                                               the_period,
                                               1./the_period)
         err = flux[np.argsort(phase)]-mag_fit
-        means.append(np.mean(err))
-        stds.append(np.std(np.abs(err-np.mean(err))))
-        maxs.append(np.max(mag_fit))
+        err = np.sqrt(np.sum(err**2)/len(flux))  # rms
+        errs.append(err)
     # dummy print for progress
     print()
 
-    best_period = period_range[np.argmax(maxs)]
+    best_period = period_range[np.argmin(errs)]
     return best_period
 
 
@@ -73,6 +70,11 @@ def cli():
             '--bestfit',
             action='store_true',
             help='evaluate folding over a period range to find best fit')
+    parser.add_argument(
+            '--step',
+            type=float,
+            default=360.,
+            help='epoch for modified jd = ts - epoch')
     # add common output arguments
     main.cli_common(parser)
     return parser.parse_args()
@@ -110,7 +112,7 @@ if __name__ == '__main__':
                                             flux,
                                             best_period/2.,
                                             2.*best_period,
-                                            360,
+                                            args.step,
                                             )
             best_period = fitted_period
             best_freq = 1./fitted_period
@@ -130,10 +132,10 @@ if __name__ == '__main__':
         output_str += '  {}\n'.format(chan_period_day)
         print(output_str)
 
-    #     if args.save:
-    #         outfile = os.path.basename(args.filename)
-    #         outfile = '{}_channel_{}'.format(outfile, channel)
-    #         outfile = outfile.replace('.', '_')
+        if args.save:
+            outfile = os.path.basename(args.filename)
+            outfile = '{}_channel_{}'.format(outfile, channel)
+            outfile = outfile.replace('.', '_')
 
         if args.verbose:
             if ax is None:
@@ -182,13 +184,12 @@ if __name__ == '__main__':
                                              fig=fig_,
                                              ax=ax_)
 
-    #     if args.save:
-    #         plt.savefig('{}_periodogram.png'.format(outfile),
-    #                     bbox_inches='tight')
-
-    #         if args.save:
-    #             plt.savefig('{}_folded.png'.format(outfile),
-    #                         bbox_inches='tight')
+        if args.save:
+            plt.savefig('{}_periodogram.png'.format(outfile),
+                        bbox_inches='tight')
+            if args.phase:
+                plt.savefig('{}_folded.png'.format(outfile),
+                            bbox_inches='tight')
 
     if args.verbose or args.phase:
         plt.show()

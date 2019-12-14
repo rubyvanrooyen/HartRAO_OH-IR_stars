@@ -110,7 +110,7 @@ if __name__ == '__main__':
         header = '{}\n'.format(name)
         header += 'MJD,  {},\n'.format(
                 ',  '.join([str(vel) for vel in chan_vel[args.channel]]))
-        timestamps = ts_jd.value
+        # timestamps = ts_jd.value
         io.output(filename, header, timestamps, detrended_spectra)
 
     if args.verbose:
