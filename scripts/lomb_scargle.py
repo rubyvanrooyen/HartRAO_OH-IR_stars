@@ -34,7 +34,7 @@ def best_fit_period(timestamps,
                     end_period,
                     nr_period=3600):  # day
     period_range = np.arange(start_period, end_period, nr_period)
-    errs = []
+    rmse = []
     for idx, the_period in enumerate(period_range):
         progress(float(idx), 50, (float(idx)/float(len(period_range))*100.))
         [phase,
@@ -45,11 +45,11 @@ def best_fit_period(timestamps,
                                               1./the_period)
         err = flux[np.argsort(phase)]-mag_fit
         err = np.sqrt(np.sum(err**2)/len(flux))  # rms
-        errs.append(err)
+        rmse.append(err)
     # dummy print for progress
     print()
 
-    best_period = period_range[np.argmin(errs)]
+    best_period = period_range[np.argmin(rmse)]
     return best_period
 
 
