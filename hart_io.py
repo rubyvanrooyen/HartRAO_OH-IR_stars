@@ -19,7 +19,8 @@ def readfile(filename):
         # ts + spectral channels timeseries
         data = fin.readlines()
 
-    chan_vel = np.array(header.strip().split(',')[1:-1], dtype=float)
+    chan_vel = [vel.strip() for vel in header.strip().split(',') if len(vel) > 0]
+    chan_vel = np.array(chan_vel[1:], dtype=float)
 
     for cntr, line in enumerate(data):
         if cntr < 1:
