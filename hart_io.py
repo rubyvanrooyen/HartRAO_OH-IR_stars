@@ -9,15 +9,14 @@ def ts2datetime(timestamps, epoch=0., tsformat='mjd'):
     return Time(timestamps + epoch, format=tsformat)
 
 
-def readfile(filename):
-    with open(filename, 'r') as fin:
-        # human readable string for information
-        comment = fin.readline()
-        # header info line
-        # timestamps [channel velocities]
-        header = fin.readline()
-        # ts + spectral channels timeseries
-        data = fin.readlines()
+def readfile(fin):
+    # human readable string for information
+    comment = fin.readline()
+    # header info line
+    # timestamps [channel velocities]
+    header = fin.readline()
+    # ts + spectral channels timeseries
+    data = fin.readlines()
 
     chan_vel = [vel.strip() for vel in header.strip().split(',') if len(vel) > 0]
     chan_vel = np.array(chan_vel[1:], dtype=float)
@@ -36,13 +35,23 @@ def readfile(filename):
     return [comment + header, chan_vel, timestamps, spectra]
 
 
-def input(filename,
+def input(filename=None,
+          file_obj=None,
           epoch=None,
           tsformat=None):
+
+    if filename is not None:
+        file_obj = open(filename, 'r')
+    else:
+        if file_obj is None:
+            raise RuntimeError('Nothing to read')
+
     [header,
      chan_vel,
      timestamps,
-     spectra] = readfile(filename)
+     spectra] = readfile(file_obj)
+    file_obj.close()
+
     ts_jd = ts2datetime(timestamps,
                         epoch=epoch,
                         tsformat=tsformat)
