@@ -1,6 +1,7 @@
 from __future__ import print_function
 
-import astropy.stats as stats
+# import astropy.stats as stats
+import astropy.timeseries as stats
 import numpy as np
 
 
