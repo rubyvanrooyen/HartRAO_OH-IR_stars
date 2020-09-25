@@ -1,0 +1,98 @@
+\section{Results}
+\label{sec:results}
+We are presenting the results of our analysis on a few selected sources from the OH monitoring data presented in \cref{sec:observations}.
+Full spectrum emission between the prominent red and blue peaks were not detectable for all targets, but the spectral profile of all targets shows the canonical `U' shape of a spherical-shell OH/IR star.
+The OH monitoring data covers a 7 year period with all targets well sampled over the latter 5 years of observation.
+Each time series contained about 260 samples after outlier removal, providing $\sim170$ samples per cycle.
+Before period and phase lag calculations all long term trends were removed from the data.
+
+{\color{red}
+Five data sets were selected for discussion, namely:
+IK Tau a strong Mira variable with a period of approximately 15 months, which shows an interesting double feature red-shifted peaks;
+{\color{red}
+V Mic: a weaker OH-IR source ...;
+}
+{\color{red}
+WX Psc, OH1.1--0.8 and OH357.1--1.3 
+}
+
+\textbf{Marion you need to provide a little more description of each source and why it was included in the discussions of this paper.
+What makes them interesting from an observational perspective.}
+}
+
+
+\subsection*{IK Tau}
+IK Tau is a Mira variable with an observed period of 470 days listed in the General Catalogue of Variable Stars
+\citep{2017ARep...61...80S}.
+Under the assumption that the OH masers are pumped during the mass loss phase of the star, we expect period calculation for the blue and red channels from the OH monitoring data to have similar periods.
+For the IK Tau OH monitoring observations we identify the blue peak at around 17.4 km/s, but also see two very distinct peaks at the far side maser region (\cref{fig:iktauspectrum}).
+The velocity for the nearest red peak is approximately 46.9 km/s, while the velocity of the second (farthest) peak is 50.6 km/s.
+{\color {red}
+\textbf{Discuss/speculate about the double peaks in the red-shifted features.}
+}
+
+The blue peak show a slow but systematic increase in the baseline, \cref{fig:iktau}, that can be best fitted with a low gradient linear polynomial.
+Comparing the time series data for the two red peaks we see similar behaviour during the initial cycles with diverging behaviour only becoming apparent in the last two cycles.
+Here the baseline of the farthest peak increase drastically compared to the steady increase of previous cycles with the amplitude of the last cycle also increasing significant to be comparable to the the amplitude of the blue peak (\cref{fig:iktautimeseries1}).
+Since this is the last of the monitoring data, it is impossible to speculate whether this is a persistent trend or a flare event.
+In comparison, the amplitude and baseline of the first red peak remain unchanged, continuing the same trend over the entire monitoring period.
+The time series data for this peak shows the same slow linear increase in the baseline as the blue peak, with no visual increase in amplitude (\cref{fig:iktautimeseries0}).
+
+IK Tau is a strong source with five (5) complete and well sampled cycles for period calculation.
+We calculated the period for all three peaks, as well as the phase lag between each of the red peaks and the single blue peak.
+The Lomb-Scargle periodogram was used to determine the dominant period (in days) per channel.
+Given the assumption of the OH masers on the near and far side of a spherical dust shell and experiencing the same pumping mechanism, we would expect the period of the channels to be reasonably similar.
+Indeed, all channels show a period of 472.58 days (\cref{fig:iktauperiod}), which is in good agreement with the observed Mira period.
+Standard cross-correlation methods were then applied to obtain the phase difference between the time series data of the red and blue peaks, with the 
+red channel at 47 km/s and the blue channel showing close correlation between time series signals.
+Correlation show the red channel lagging the blue channel by less than a day (0.245 days).
+The farthest red channel was found to lag behind the blue channel much more, by around 7.261 days.
+
+
+\subsection*{V Mic}
+Similar to IK Tau, V Mic is a Mira variable with an observed period of 381.15 days from the General Catalogue of Variable Stars
+\citep{2017ARep...61...80S}.
+However, V Mic is a weak OH-IR source for which the blue and red channels were selected as shown in the spectrum plot \cref{fig:vmicspectrum}.
+Time series data for the channels show a flat trend over time and no visible change in amplitude for either of the channels.
+The red channel is however, significantly dimmer than the blue channel and the data for the red channel is much noisier as a result.
+The time series of V Mic also has five (5) complete cycles and are well sampled over the latter four (4) or these cycles (\cref{fig:vmictimeseries}).
+
+Being a weak source also makes period and phase difference calculation more uncertain.
+Period calculation gave period of 378.45 days and 391.28 days for the blue and red channels respectively (\cref{fig:vmicperiod}).
+An average period of 384.86 days was thus assumed, which is in agreement with the observed stellar period.
+This average period provides a phase difference of 4.9 days between the red and blue channels.
+{\color {red}
+Marion to add xref of Martin Shepard's thesis -- delay noted and please add reference
+}
+
+
+\subsection*{WX Psc}
+{\color{gray}
+WX Psc is a weaker source with a period of two years and seven cycles of data, shown in \cref{fig:wxpsctimeseries}.
+By contrast with OH357.1--1.3, WX Psc has narrow peaks with no noticeable emission in between (\cref{fig:wxpscspectrum}).
+The brightest blue-- and red--shifted peaks are represented by channels 2 and 3 and channels 11 and 12 respectively.
+There were 330 samples across the whole time series.
+For cycles 1 -- 4.5, observed at two-week intervals, there were typically $\sim45$ samples per cycle, albeit with significant gaps in cycles 1 and 2.
+The remaining one and a half cycles had double the number of samples per cycle.
+}
+
+
+\subsection*{OH357.3--1.3}
+OH357.1–1.3 is a strong source but being slow varying means that over the multi-year OH monitoring program only one complete cycle was observed.
+Clear peaks are visible in the spectral profile and emission is detectable  at all points between the two peaks (\cref{fig:oh357spectrum}).
+The time series of the associated brightest blue- and red-shifted peaks clearly displays the typical nature of light curves with asymmetry between the rise and decay periods of the light curves (\cref{fig:oh357timeseries}).
+Other than for IK Tau and V Mic, the red channel are comparable in amplitude rather than weaker than the blue channel.
+It also shows a clear increase in amplitude over the second peak in the time series data and the peak profile appears sharper than the first peak period.
+The two peaks in the time series data are more similar.
+Visually there seem to be some delay between the 2 signals, but given the asymmetry in the signal and only a single observed period the signals will not fold well, making period calculation using numerical methods a little more challenging.
+Numerical and statistical methods require at least a few cycles in the data in order to compute a wide enough range for the frequency grids
+\citep{2018ApJS..236...16V}.
+For this source, period estimation was thus done manually, by selecting the initial period as the time between the two peaks for each channel, and then refining the period by folding the data around the initial period until a reasonable folded profile was obtained (\cref{fig:oh357period}).
+An approximate period of 2141.4213 days was identified as the best fit.
+Using this period for cross correlation calculations provided a phase shift of 48.9034 days between the maximum and minimum light curves for OH357.1–1.3.
+{\color {red}
+Marion xref with lag determined by thesis
+}
+
+
+\subsection*{OH1.1--0.8}

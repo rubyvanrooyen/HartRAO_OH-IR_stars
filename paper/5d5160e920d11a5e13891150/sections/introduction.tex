@@ -1,0 +1,43 @@
+\section{Introduction}
+OH/IR stars are late-type stars in the AGB phase of stellar evolution, undergoing substantial mass loss and enshrouded in a thick, expanding shell of dust
+\citep[][review]{WilBar68,RJC89}.
+The central star heats the dust which re-radiates in the IR.
+OH is formed in the outer regions of the dust shell through photo-dissociation of water molecules by UV light.
+The thickness of the dust shell, together with the expansion, results in long column densities of OH molecules travelling at velocities with a narrow range of dispersion.
+This velocity coherence amongst the OH molecules allows for masing in the dust shell pumped by far-IR photons.
+The masers have a characteristic double-peaked profile at 1612 MHz
+\citep[][review]{WilBar72,RJC89}
+with the most intense radiation arising from the near- and far-sides of the dust shell along the line of sight to the observer.
+
+The central star pulsates resulting in variable heating of the dust and hence IR variations which follow the fluctuations of the central star.
+OH maser variations follow the IR variations.
+Monitoring the fluctuations in the OH maser radiation allows the phase lag between radiation coming from the front and back of the dust shell to be measured.
+This yields the physical size of the OH shell around the star.
+The angular diameter of the shell can be measured using interferometry and by combining the two measurements an independent estimate of the distance to the star can be obtained.
+The distance measurement is only valid if the OH masing shell obeys the thin shell model
+\citep[][review]{ReidMMJS77,RJC89},
+ie. it is thin relative to the size of the dust shell and is spherically symmetric.
+
+Determining phase lags from real data appears simple in principle but is non-trivial in practice
+Several papers addressing the problem of determining phase lags from lensed quasars highlight some of the difficulties encountered in finding suitable methods
+\citep[eg.][]{PhLGil-M02,PhLOscoz01,PhLPelt96,PhLPress92,EK88}.
+Standard analytical techniques are appropriate where underlying functions are continuous, stationary, stochastic and regularly sampled
+\citep{Welsh99,EK88}.
+Real astronomical data rarely fit these criteria.
+The \mbox{HartRAO} OH time series, as is generally the case, are continuous and stochastic, but are neither stationary nor regularly sampled.
+
+To determine the phase lag between radiation from the front and back of the OH shell an estimate of the frequency and period of each signals must be obtained.
+The HartRAO monitoring data are frequently sampled, making the data well suited for periodogram calculation using the Lomb-Scargle periodogram.
+The Lomb-Scargle periodogram is a well-known algorithm for detecting and characterising periodic signals in unevenly sampled data
+\citep{2018ApJS..236...16V}.
+
+The HartRAO OH-IR monitoring data will now be publicly available.
+The aim of this work is to present a sample of the monitoring data, along with processing methods for phase-lag calculation.
+
+The observational data used in the analysis is described in \cref{sec:observations}.
+Data analysis methods are explained in \cref{sec:analysis}.
+We present our results on a few selected sources in \cref{sec:results}.
+{\color {red}
+TBD: \cref{sec:irdata} IR data
+}
+Lastly, \cref{sec:discussion} present a short discussion of our results.

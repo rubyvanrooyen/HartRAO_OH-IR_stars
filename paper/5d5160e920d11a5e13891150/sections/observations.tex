@@ -1,0 +1,45 @@
+\section{Observations}
+\label{sec:observations}
+
+A set of 20 OH/IR stars was selected for monitoring in the ground state OH lines using the 26--m telescope at Hartebeesthoek
+\citep{West98}.
+They were monitored from late 1985 until early 1996.
+Initially observations were made every two weeks, but the rapid increases in brightness for some of the sources were found to be undersampled and as a result the observing frequency was increased to once a week in mid 1993.
+GLONASS interference affected the data
+\citep{ComWestGay94}
+and this eventually led to the termination of the programme.
+
+The HartRAO antenna had an aperture efficiency of 0.51 when the subreflector was tilted for observing with the off-axis 18cm feed horn.
+The beamwidth was $0.5^\circ$ and the pointing accuracy was $30''$.
+The spectrometer accepted only one polarization, and left circular
+polarization was normally used.  The zenith system temperature was typically 40--50 K.
+A correlator bandwidth of 0.64--MHz, covered by 256 channels, provided a velocity resolution of 0.45 km s$^{-1}$.
+Most sources were observed at 1612--MHz, although some were also observed at 1665-- and 1667--MHz.
+The {\em rms\/} noise on a single fifteen minute spectrum was 0.6 Jy.
+Standard continuum sources
+\citep{Ott94}
+and the 1667--MHz OH absorption towards W12 were used for calibration.
+
+Baseline curvature in the spectra was removed by subtracting low-order polynomials fitted to signal-free segments.
+Atmospheric absorption was corrected using a formula obtained from the Jodrell Bank Observatory.
+Data affected by rain and the proximity of the Sun were discarded.
+After correction, spectra taken in any given 24--hour period were averaged.
+Time series were created for all channels with a useful signal to noise ratio.
+
+Interference from GLONASS satellites increased the noise level in the spectra, suppressed the maser lines, affected the system temperature calibration and introduced excessive curvature into the spectrum baselines
+\citep{ComWestGay94}.
+Manual correction of GLONASS interference
+\citep{West98}
+was the method of choice for the sources presented in the paper.
+The maximum and minimum light curves of the sources shown in \cref{sec:results} uses this cleaned data.
+{\color{red}
+\textbf{Marion: add a short summary of the evaluation methods applied to manually clean the data?}
+
+Please reference your table of sources here \cref{app:sources}
+}
+
+This is however a very time consuming process.
+Iterative outlier rejection schemes that systematically smooths and detrends the time series data of an individual channel can be employed to recursively identify and remove outliers greater than 3$\sigma$.
+Such an automated outlier rejection scheme is suggested in \cref{app:cleaning}.
+The algorithm implementation was tested against the manually corrected data of the sources.
+Reducing the need for manual removal to a minimal intervention.

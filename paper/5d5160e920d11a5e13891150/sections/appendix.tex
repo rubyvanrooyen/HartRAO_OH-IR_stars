@@ -1,0 +1,27 @@
+\section{Tables of sources}
+\label{app:sources}
+{\color {red}
+\textbf{Marion add your tables here please}
+}
+
+
+\section{Automated cleaning of spectra}
+\label{app:cleaning}
+
+Automated detection and removal of data points outside a 3 sigma deviation from the mean will assist manual removal of outliers in the selected channels.
+The identification of these outliers requires some form of smoothing, which can be accomplished using robust signal processing algorithms such as the Savitzky Golay smoothing filter
+\citep{1964AnaCh..36.1627S}.
+In an iterative process a curve is fitted to the data and subtracted from the original to obtain a residual.
+This residual is used to identify and remove outliers, after which the cleaned data is used to repeat the process.
+A conservative approach is taken when implementing this automatic cleaning of the data to void over-cleaning.
+Opting for manual intervention to remove the remaining few outliers after the automated process had finished.
+The results from such an automated run applied to the blue channel of IK Tau is shown in \cref{fig:iktaublueclean}.
+
+Since we chose conservative thresholds and smoothing windows, we found that we generally needed to repeat the iterative auto-cleaning process at least twice for signals that have sections with large scatter.
+Especially if those outlier points were distributed over a range of deviations from the mean, such as can be seen in our example IK Tau data series (\cref{fig:iktaublueclean}) around 1989 observation period.
+Visualisation of the cleaned output data after each cleaning run was used to verify the success of the cleaning step.
+
+Even though we used the cleaned data for the analysis, we tended to detrend the data before calculation.
+The HartRAO OH maser monitoring program spanned several years.
+This removal of long term trends over the years that the OH monitoring program was observed tend to help the numerical methods that will apply some form of normalisation, such as subtracting the mean, to the data.
+Subtracting low order polynomial removes these long term trends in the data, and notebooks showing this process can be found on GitHub (\mbox{\url{https://github.com/rubyvanrooyen/HartRAO_OH-IR_stars}}).

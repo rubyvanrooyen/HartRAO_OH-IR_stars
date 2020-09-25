@@ -1,0 +1,35 @@
+\section{Analysis}
+\label{sec:analysis}
+
+Time series analysis of astronomy data is slightly more challenging because the data tends to be stochastic, non-stationary and irregularly sampled.
+Making it an uncomfortable fit for standard signal processing methods.
+% Consequently, this generally requires some form of up-sampling through interpolation methods, as well as data conditioning such as normalisation.
+To determine the phase lag and coherency of the HartRAO OH monitoring data, appropriate methods are selected to deal with the idiosyncrasies of the observed data.
+
+The HartRAO OH time series data monitored pulsed radiation from OH/IR stars over a multi-year campaign, providing good quality, frequently sampled observational data.
+The ligth curves contains multiple cycles of periodic signals, and are well suited for analysis using the Lomb-Scargle periodogram
+\citep{2018ApJS..236...16V}.
+
+In order to robustify the numerical calculations, some pre-processing of the data was done before analysis.
+This was limited to the manual removal of excessive outlier data points, commonly associated with GLONASS interference, as discussed in \cref{sec:observations}.
+Given the high sample rate and length of the HartRAO time series data, excessive smoothing is not required and removal of extreme outliers is generally sufficient.
+More automated cleaning can also be accomplished using signal processing algorithms such as the Savitzky Golay smoothing filter
+\citep{1964AnaCh..36.1627S}.
+A detailed discussion of this scheme is provided in \cref{app:cleaning} applied to the maximum light curve for IK Tau (\cref{fig:iktaublueclean}).
+Since the HartRAO OH maser monitoring program spanned several years, some time series data may require removing long term trends introducing a bias over time.
+This is easily achieved by fitting and subtracting a low order polynomial to the time series.
+
+To calculate the phase difference (lag) between two signals, an estimate of the frequency (or period) of the signals is obtained.
+The Lomb-Scargle periodogram is widely used in the analysis of the light curves of variable stars
+\citep{1990ApJ...348..700K}.
+In essence, the ``fast Lomb-Scargle algorithm'' computes a Fourier-like power spectrum based on the NFFT algorithm that provides an estimate of the period of oscillation for the variable time series
+\citep{1989ApJ...338..277P,2018ApJS..236...16V}.
+Only a few oscillations are required for computation and the computational effort is similar.
+The Lomb-Scargle periodogram, selects a suitable frequency grid automatically based on the input data.
+It should be noted that sometimes irregularly-sampled data can be severely undersampled, requiring the user to specify a higher Nyquist frequency when computing the periodogram
+\citep{2006MNRAS.371.1390K}.
+
+Once a period is obtained, the time series can be folded by plotting the periodogram as a function of phase rather than time.
+This superimposes the periodic cycles over each other, clearly showing the shape of a cycle.
+The HartRAO OH monitoring data is very well sampled and do not require folding to extract the shape of the periodic cycles.
+% It does show the distribution of frequency and amplitude of the cycles over the multi-year monitoring period.
